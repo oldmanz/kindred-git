@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Kindred: Zimmerman</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="familytree.js"></script>
+  </head>
+  <body>
+
+    <div style="width:100vw; height:100vh;" id="tree"></div>
+
+
+    <script>
+      const userAction = async () => {
+        const response = await fetch('http://localhost:5000/people');
+        const myJson = await response.json();
+        console.log(myJson);
+        FamilyTree.SEARCH_PLACEHOLDER = "Search";
+      let family = new FamilyTree(document.getElementById("tree"), {
+          template: "tommy",
+          mode: "light",
+          nodeBinding: {
+              field_0: "name"
+          },
+          nodes:myJson,
+          nodeMenu:{
+                details: {text:"Details"},
+                edit: {text:"Edit"}
+            }
+      });
+      family.onUpdateNode((args) => {
+        console.log(args)
+        fetch('http://localhost:5000/save', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(args)
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+      //return false; to cancel the operation
+      });
+      }
+      userAction()
+      
+    </script> 
+  </body>
+</html>
+

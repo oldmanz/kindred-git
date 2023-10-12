@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  backend:
+    restart: always
+    build:
+      context: '.'
+      dockerfile: Dockerfile.py-develop
+    ports:
+      - "5000:5000" 
+    networks:
+      - backend
+  db:
+    restart: always
+    image: mongo:7.0.2
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - "27017:27017"
+    volumes:
+      - kindred-db:/data/d
+    container_name: db
+    networks:
+      - backend
+
+networks:
+  backend:
+volumes:
+  kindred-db:
