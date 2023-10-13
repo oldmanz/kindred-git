@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/* .
 
 #CMD [ "flask", "--app", "kindred", "run", "--host=0.0.0.0"]
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+#ENTRYPOINT ["tail", "-f", "/dev/null"]
